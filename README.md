@@ -15,7 +15,7 @@ This is a template to generate an Android App Project for [AndroidStudio](https:
 - open the project in `out/<APP>` [AndroidStudio](https://developer.android.com/studio)
 - test the some hello world demo
 - replace the code in: `out/<APP>/app/jni/src/include` & `out/<APP>/app/jni/src/src`
-- add resources to some: `out/<APP>/app/src/main/assets/res`
+- add resources: `out/<APP>/app/src/main/assets/res`
 - have a look at the Android makefile: `out/<APP>/app/jni/src/Android.mk`
 - change the icons in: `out/<APP>/app/src/main/res`
 - have fun
@@ -27,7 +27,7 @@ René Horstmann
 
 ## License
 
-The somme project is licensed under the MIT License - see the someLICENSE file for details
+The some project is licensed under the MIT License - see the someLICENSE file for details
 
 - Used third party libraries:
     - [SDL2](https://www.libsdl.org/) (zlib License)
