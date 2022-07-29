@@ -12,8 +12,8 @@ This is a template to generate an Android App Project for [AndroidStudio](https:
 	- `DOMAIN`
 	- `APP`
 - run the script
-- open the project in `out/<APP>` [AndroidStudio](https://developer.android.com/studio)
-- test the some hello world demo
+- open the project `out/<APP>` ikln [AndroidStudio](https://developer.android.com/studio)
+- test the some *hello world* demo
 - replace the code in: `out/<APP>/app/jni/src/include` & `out/<APP>/app/jni/src/src`
 - add resources: `out/<APP>/app/src/main/assets/res`
 - have a look at the Android makefile: `out/<APP>/app/jni/src/Android.mk`
