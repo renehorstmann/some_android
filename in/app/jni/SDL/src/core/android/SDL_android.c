@@ -49,7 +49,7 @@
 #include <unistd.h>
 #include <dlfcn.h>
 
-#define SDL_JAVA_PREFIX                                 de_horsimann_some
+#define SDL_JAVA_PREFIX                                 @@@package_underscored@@@
 #define CONCAT1(prefix, class, function)                CONCAT2(prefix, class, function)
 #define CONCAT2(prefix, class, function)                Java_ ## prefix ## _ ## class ## _ ## function
 #define SDL_JAVA_INTERFACE(function)                    CONCAT1(SDL_JAVA_PREFIX, SDLActivity, function)
@@ -518,10 +518,10 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
         return JNI_VERSION_1_4;
     }
 
-    register_methods(env, "de/horsimann/some/SDLActivity", SDLActivity_tab, SDL_arraysize(SDLActivity_tab));
-    register_methods(env, "de/horsimann/some/SDLInputConnection", SDLInputConnection_tab, SDL_arraysize(SDLInputConnection_tab));
-    register_methods(env, "de/horsimann/some/SDLAudioManager", SDLAudioManager_tab, SDL_arraysize(SDLAudioManager_tab));
-    register_methods(env, "de/horsimann/some/SDLControllerManager", SDLControllerManager_tab, SDL_arraysize(SDLControllerManager_tab));
+    register_methods(env, "@@@package_slashed@@@/SDLActivity", SDLActivity_tab, SDL_arraysize(SDLActivity_tab));
+    register_methods(env, "@@@package_slashed@@@/SDLInputConnection", SDLInputConnection_tab, SDL_arraysize(SDLInputConnection_tab));
+    register_methods(env, "@@@package_slashed@@@/SDLAudioManager", SDLAudioManager_tab, SDL_arraysize(SDLAudioManager_tab));
+    register_methods(env, "@@@package_slashed@@@/SDLControllerManager", SDLControllerManager_tab, SDL_arraysize(SDLControllerManager_tab));
 
     return JNI_VERSION_1_4;
 }

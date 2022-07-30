@@ -84,8 +84,8 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     private static String upload_file;
 
     public static native void eIoOnFileUploaded();
-    public static native void uFetchSucceeded(long fetch_ptr);
-    public static native void uFetchFailed(long fetch_ptr);
+
+    public static native void uFetchFinished(int succeeded, int fetch_idx);
 
 
     @Override
@@ -101,15 +101,12 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                 while ((length = istream.read(buffer)) > 0) {
                     ostream.write(buffer, 0, length);
                 }
+
+                istream.close();
+                ostream.close();
             } catch (Exception e) {
+                Log.d(TAG, "downloading failed");
                 e.printStackTrace();
-            } finally {
-                try {
-                    istream.close();
-                    ostream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         }
 
@@ -124,18 +121,14 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                 while ((length = istream.read(buffer)) > 0) {
                     ostream.write(buffer, 0, length);
                 }
+                istream.close();
+                ostream.close();
 
                 eIoOnFileUploaded();
 
             } catch (Exception e) {
+                Log.d(TAG, "uploading failed");
                 e.printStackTrace();
-            } finally {
-                try {
-                    istream.close();
-                    ostream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
@@ -180,66 +173,62 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     }
 
 
-    private void u_fetch_request_thread_fn(String url_spec, int mode, long fetch_ptr) {
+    private void u_fetch_request_thread_fn(String url_spec, int mode, int fetch_idx) {
         try {
+            String post_file = String.format(Locale.ROOT, "%s/u_fetch_post_%04d.bin",
+                    getFilesDir().getAbsolutePath(), fetch_idx);
+            String result_file = String.format(Locale.ROOT, "%s/u_fetch_result_%04d.bin",
+                    getFilesDir().getAbsolutePath(), fetch_idx);
+
             URL url = new URL(url_spec);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             InputStream istream = null;
             OutputStream ostream = null;
-            try {
-                byte[] buffer = new byte[1024];
-                int length;
+            byte[] buffer = new byte[1024];
+            int length;
 
-                if(mode==1) {
-                    // POST
-                    urlConnection.setDoOutput(true);
-                    istream = new FileInputStream(getFilesDir().getAbsolutePath() + "/u_fetch_post.bin");
-                    ostream = new BufferedOutputStream(urlConnection.getOutputStream());
-                    while ((length = istream.read(buffer)) > 0) {
-                        ostream.write(buffer, 0, length);
-                    }
-                    try {
-                        istream.close();
-                        ostream.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                istream = new BufferedInputStream(urlConnection.getInputStream());
-                ostream = new FileOutputStream(getFilesDir().getAbsolutePath() + "/u_fetch_result.bin");
+            if (mode == 1) {
+                // POST
+                urlConnection.setDoOutput(true);
+                istream = new FileInputStream(post_file);
+                ostream = new BufferedOutputStream(urlConnection.getOutputStream());
                 while ((length = istream.read(buffer)) > 0) {
                     ostream.write(buffer, 0, length);
                 }
-
-                uFetchSucceeded(fetch_ptr);
-
-            } finally {
-                urlConnection.disconnect();
-                try {
-                    istream.close();
-                    ostream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                istream.close();
+                ostream.close();
             }
+
+            istream = new BufferedInputStream(urlConnection.getInputStream());
+            ostream = new FileOutputStream(result_file);
+            while ((length = istream.read(buffer)) > 0) {
+                ostream.write(buffer, 0, length);
+            }
+
+            istream.close();
+            ostream.close();
+            urlConnection.disconnect();
+
+            uFetchFinished(1, fetch_idx);
         } catch (Exception e) {
             e.printStackTrace();
             Log.d(TAG, "failed to fetch");
-            uFetchFailed(fetch_ptr);
+
+            uFetchFinished(0, fetch_idx);
         }
     }
 
     // mode 0 = get
     // mode 1 = pose
-    public void u_fetch_request(String url, int mode, long fetch_ptr) {
-        Log.d(TAG, "u_fetch_request: " + url + " mode="+mode);
-        new Thread(new Runnable(){
+    public void u_fetch_request(String url, int mode, int fetch_idx) {
+        Log.d(TAG, "u_fetch_request: " + url + " mode=" + mode);
+        new Thread(new Runnable() {
             public void run() {
-                u_fetch_request_thread_fn(url, mode, fetch_ptr);
+                u_fetch_request_thread_fn(url, mode, fetch_idx);
             }
         }).start();
     }
+
 
 /*
     // Display InputType.SOURCE/CLASS of events and devices

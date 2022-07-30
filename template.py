@@ -84,6 +84,8 @@ if __name__ == '__main__':
     print('finish')
 
     print('')
+    print('~ '*32)
+    print('')
     print('Start the some Hello World App with Android Studio and test it')
     print('')
     print('Now you can replace your apps code and assets:')
@@ -92,3 +94,6 @@ if __name__ == '__main__':
     print('Replace the App icons in out/'+APP+'/app/src/main/res')
     print('')
     print('You should now be ready to compile your own App in AndroidStudio')
+    
+    input('')
+    
