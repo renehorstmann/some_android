@@ -6,13 +6,9 @@ This is a template to generate an Android App Project for [AndroidStudio](https:
 
 ## Getting started
 
-- Open the python script [template.py](template.py) in a text editor
-- change the template strings to match your App	
-	- `DOMAIN_NAMESPACE`
-	- `DOMAIN`
-	- `APP`
-- run the script
-- open the project `out/<APP>` ikln [AndroidStudio](https://developer.android.com/studio)
+- Clone the project and cd to that dir
+- run the template script: `python template.py <DOMAIN_NAMESPACE> <DOMAIN> <APP>
+- open the project `out/<APP>` in [AndroidStudio](https://developer.android.com/studio)
 - test the some *hello world* demo
 - replace the code in: `out/<APP>/app/jni/src/include` & `out/<APP>/app/jni/src/src`
 - add resources: `out/<APP>/app/src/main/assets/res`
@@ -34,3 +30,4 @@ The some project is licensed under the MIT License - see the someLICENSE file fo
     - [Emscripten](emscripten.org) (MIT License)
     - [nuklear](https://github.com/Immediate-Mode-UI/Nuklear) for debug gui windows (MIT License)
     - [curl](https://curl.se/docs/copyright.html) (MIT like License)
+    - [sfd](https://github.com/rxi/sfd) for simple file dialogs (MIT License)

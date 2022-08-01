@@ -38,8 +38,7 @@ DOMAIN = 'horsimann'
 APP = 'some'
 
 
-if __name__ == '__main__':
-
+def run_template():
     print('applying template')
     import shutil
 
@@ -96,4 +95,22 @@ if __name__ == '__main__':
     print('You should now be ready to compile your own App in AndroidStudio')
     
     input('')
-    
+
+
+if __name__ == '__main__':
+    import sys
+
+    if len(sys.argv) != 4:
+        print('Usage: python', sys.argv[0], '<DOMAIN_NAMESPACE> <DOMAIN> <APP>')
+        print(' e.g.: python', sys.argv[0], 'de horsimann some')
+        exit(1)
+
+    DOMAIN_NAMESPACE = sys.argv[1]
+    DOMAIN = sys.argv[2]
+    APP = sys.argv[3]
+
+    print('DOMAIN_NAMESPACE =', DOMAIN_NAMESPACE)
+    print('DOMAIN =', DOMAIN)
+    print('APP =', APP)
+
+    run_template()

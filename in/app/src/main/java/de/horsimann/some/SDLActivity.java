@@ -1,8 +1,10 @@
 package @@@package_dotted@@@;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.UiModeManager;
 import android.content.ClipboardManager;
 import android.content.ClipData;
@@ -69,6 +71,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.Locale;
+
 
 
 /**
@@ -830,6 +833,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     }
 
     /* Transition to next state */
+    private static boolean main_running = false;
     public static void handleNativeState() {
 
         if (mNextNativeState == mCurrentNativeState) {
@@ -863,7 +867,19 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                     // This is the entry point to the C app.
                     // Start up the C app thread and enable sensor input for the first time
                     // FIXME: Why aren't we enabling sensor input at start?
-
+					
+					// Added, because some got some assumptions wrong (double init)
+					if(main_running) {
+                        Log.e(TAG, "main already running? Restarting the app...");
+                        Intent mStartActivity = new Intent(getContext(), SDLActivity.class);
+                        int mPendingIntentId = 123456;
+                        PendingIntent mPendingIntent = PendingIntent.getActivity(getContext(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                        AlarmManager mgr = (AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
+                        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                        System.exit(0);
+                    }
+                    main_running = true;
+					
                     mSDLThread = new Thread(new SDLMain(), "SDLThread");
                     mSurface.enableSensor(Sensor.TYPE_ACCELEROMETER, true);
                     mSDLThread.start();
