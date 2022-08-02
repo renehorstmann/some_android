@@ -4,8 +4,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="@@@package_dotted@@@"
-    android:versionCode="1"
-    android:versionName="1.0"
+    android:versionCode="100"
+    android:versionName="1.00"
     android:installLocation="auto">
 
     <!-- OpenGL ES 3.0 -->

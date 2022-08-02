@@ -7,15 +7,15 @@ if (buildAsApplication) {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
     defaultConfig {
         if (buildAsApplication) {
             applicationId "@@@package_dotted@@@"
         }
         minSdkVersion 18
-        targetSdkVersion 31
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 33
+        versionCode 100
+        versionName "1.00"
         externalNativeBuild {
             ndkBuild {
                 arguments "APP_PLATFORM=android-18"
