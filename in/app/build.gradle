@@ -12,13 +12,13 @@ android {
         if (buildAsApplication) {
             applicationId "@@@package_dotted@@@"
         }
-        minSdkVersion 18
+        minSdkVersion 23
         targetSdkVersion 33
         versionCode 100
         versionName "1.00"
         externalNativeBuild {
             ndkBuild {
-                arguments "APP_PLATFORM=android-18"
+                arguments "APP_PLATFORM=android-23"
                 abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
             }
         }
@@ -29,6 +29,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
+    namespace '@@@package_dotted@@@'
     applicationVariants.all { variant ->
         tasks["merge${variant.name.capitalize()}Assets"]
                 .dependsOn("externalNativeBuild${variant.name.capitalize()}")
@@ -43,9 +47,6 @@ android {
             }
         }
 
-    }
-    lintOptions {
-        abortOnError false
     }
 
     if (buildAsLibrary) {
@@ -63,4 +64,11 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    // AdMob (and ump for the privacy messages):
+    implementation 'com.google.android.gms:play-services-ads:21.3.0'
+    implementation 'com.google.android.ump:user-messaging-platform:2.0.0'
+
+    // play store billing:
+    implementation "com.android.billingclient:billing:5.1.0"
 }
