@@ -14,7 +14,7 @@ LOCAL_CFLAGS += -DSOME_ANDROID_PACKAGE=@@@package_underscored@@@
 # LOCAL_CFLAGS += -DOPTION_TTF
 
 # for option fetch, uncomment AndroidManifest.xml : android.permission.INTERNET
-# LOCAL_CFLAGS += -DOPTION_FETCH
+#@@@USE_FETCH@@@LOCAL_CFLAGS += -DOPTION_FETCH
 
 
 #
@@ -48,7 +48,7 @@ LOCAL_SRC_FILES := $(SOME_SRC_FILES:$(LOCAL_PATH)/%=%)
 # Also have a look at SDLActivity.java : getLibraries in which the modules are loaded (uncomment there, too)
 LOCAL_SHARED_LIBRARIES := SDL2
 LOCAL_SHARED_LIBRARIES += SDL2_image
-# LOCAL_SHARED_LIBRARIES += SDL2_mixer
+#@@@USE_MIXER@@@LOCAL_SHARED_LIBRARIES += SDL2_mixer
 # LOCAL_SHARED_LIBRARIES += SDL2_net
 # LOCAL_SHARED_LIBRARIES += SDL2_ttf
 

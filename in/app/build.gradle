@@ -66,9 +66,9 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // AdMob (and ump for the privacy messages):
-    implementation 'com.google.android.gms:play-services-ads:21.3.0'
-    implementation 'com.google.android.ump:user-messaging-platform:2.0.0'
+    //@@@USE_ADMOB@@@implementation 'com.google.android.gms:play-services-ads:21.3.0'
+    //@@@USE_ADMOB@@@implementation 'com.google.android.ump:user-messaging-platform:2.0.0'
 
     // play store billing:
-    implementation "com.android.billingclient:billing:5.1.0"
+    //@@@USE_BILLING@@@implementation "com.android.billingclient:billing:5.1.0"
 }

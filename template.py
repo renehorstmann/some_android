@@ -37,6 +37,11 @@ DOMAIN_NAMESPACE = 'de'
 DOMAIN = 'horsimann'
 APP = 'some'
 
+USE_MIXER = False
+USE_FETCH = False
+USE_ADMOB = False
+USE_BILLING = False
+
 
 def run_template():
     print('applying template')
@@ -55,6 +60,25 @@ def run_template():
         '@@@package_slashed@@@':  DOMAIN_NAMESPACE + '/' + DOMAIN + '/' + APP,
         '@@@app_name@@@': APP
     }
+    
+    if USE_MIXER:
+        TEMPLATE['#@@@USE_MIXER@@@'] = ''
+        TEMPLATE['//@@@USE_MIXER@@@'] = ''
+    
+    if USE_FETCH:
+        TEMPLATE['#@@@USE_FETCH@@@'] = ''
+        TEMPLATE['<!--@@@USE_FETCH@@@'] = ''
+        TEMPLATE['@@@USE_FETCH@@@-->'] = ''
+    
+    if USE_ADMOB:
+        TEMPLATE['//@@@USE_ADMOB@@@'] = ''
+        TEMPLATE['<!--@@@USE_ADMOB@@@'] = ''
+        TEMPLATE['@@@USE_ADMOB@@@-->'] = ''
+        
+    if USE_BILLING:
+        TEMPLATE['//@@@USE_BILLING@@@'] = ''
+        TEMPLATE['<!--@@@USE_BILLING@@@'] = ''
+        TEMPLATE['@@@USE_BILLING@@@-->'] = ''
 
     apply_replace_on_file('out/APP/app/jni/src/Android.mk', TEMPLATE)
 
@@ -92,6 +116,15 @@ def run_template():
     print('  res               ->  out/'+APP+'/app/src/main/assets')
     print('Replace the App icons in out/'+APP+'/app/src/main/res')
     print('')
+    
+    if USE_ADMOB:
+        print('AdMob: Replace your ad app id in -> out/'+APP+'/app/src/main/AndroidManifest.xml')
+        print('AdMob: Replace your ad reward id in -> out/'+APP+'/app/src/main/java/'+DOMAIN_NAMESPACE+'/'+DOMAIN+'/'+APP+'/SDLActivity.java')
+        print('')
+    if USE_BILLING:
+        print('Billing: Replace your billing product ids in -> out/'+APP+'/app/src/main/java/'+DOMAIN_NAMESPACE+'/'+DOMAIN+'/'+APP+'/SDLActivity.java')
+        print('')
+    
     print('You should now be ready to compile your own App in AndroidStudio')
     
     input('')
@@ -99,18 +132,38 @@ def run_template():
 
 if __name__ == '__main__':
     import sys
-
-    if len(sys.argv) != 4:
-        print('Usage: python', sys.argv[0], '<DOMAIN_NAMESPACE> <DOMAIN> <APP>')
+    
+    def print_help():
+        print('Usage: python', sys.argv[0], '<DOMAIN_NAMESPACE> <DOMAIN> <APP> [use_mixer] [use_fetch] [use_admob] [use_billing]')
         print(' e.g.: python', sys.argv[0], 'de horsimann some')
         exit(1)
+    
+
+    if len(sys.argv) < 4 or len(sys.argv) > 8:
+        print_help()
 
     DOMAIN_NAMESPACE = sys.argv[1]
     DOMAIN = sys.argv[2]
     APP = sys.argv[3]
+    
+    if 'use_mixer' in sys.argv[4:]:
+        USE_MIXER = True
+    
+    if 'use_fetch' in sys.argv[4:]:
+        USE_FETCH = True
+    
+    if 'use_admob' in sys.argv[4:]:
+        USE_ADMOB = True
+        
+    if 'use_billing' in sys.argv[4:]:
+        USE_BILLING = True
 
     print('DOMAIN_NAMESPACE =', DOMAIN_NAMESPACE)
     print('DOMAIN =', DOMAIN)
     print('APP =', APP)
+    print('use_mixer =', USE_MIXER)
+    print('use_fetch =', USE_FETCH)
+    print('use_admob =', USE_ADMOB)
+    print('use_billing =', USE_BILLING)
 
     run_template()

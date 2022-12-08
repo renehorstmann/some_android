@@ -58,33 +58,35 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.ConsumeParams;
-import com.android.billingclient.api.ConsumeResponseListener;
-import com.android.billingclient.api.ProductDetails;
-import com.android.billingclient.api.ProductDetailsResponseListener;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.android.billingclient.api.QueryProductDetailsParams;
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.OnUserEarnedRewardListener;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.ads.rewarded.RewardItem;
-import com.google.android.gms.ads.rewarded.RewardedAd;
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
-import com.google.android.ump.ConsentForm;
-import com.google.android.ump.ConsentInformation;
-import com.google.android.ump.ConsentRequestParameters;
-import com.google.android.ump.FormError;
-import com.google.android.ump.UserMessagingPlatform;
+//@@@USE_ADMOB@@@import com.google.android.ump.ConsentForm;
+//@@@USE_ADMOB@@@import com.google.android.ump.ConsentInformation;
+//@@@USE_ADMOB@@@import com.google.android.ump.ConsentRequestParameters;
+//@@@USE_ADMOB@@@import com.google.android.ump.FormError;
+//@@@USE_ADMOB@@@import com.google.android.ump.UserMessagingPlatform;
+
+//@@@USE_ADMOB@@@import com.google.android.gms.ads.AdError;
+//@@@USE_ADMOB@@@import com.google.android.gms.ads.AdRequest;
+//@@@USE_ADMOB@@@import com.google.android.gms.ads.FullScreenContentCallback;
+//@@@USE_ADMOB@@@import com.google.android.gms.ads.LoadAdError;
+//@@@USE_ADMOB@@@import com.google.android.gms.ads.MobileAds;
+//@@@USE_ADMOB@@@import com.google.android.gms.ads.OnUserEarnedRewardListener;
+//@@@USE_ADMOB@@@import com.google.android.gms.ads.initialization.InitializationStatus;
+//@@@USE_ADMOB@@@import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+//@@@USE_ADMOB@@@import com.google.android.gms.ads.rewarded.RewardItem;
+//@@@USE_ADMOB@@@import com.google.android.gms.ads.rewarded.RewardedAd;
+//@@@USE_ADMOB@@@import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+
+//@@@USE_BILLING@@@import com.android.billingclient.api.BillingClient;
+//@@@USE_BILLING@@@import com.android.billingclient.api.BillingClientStateListener;
+//@@@USE_BILLING@@@import com.android.billingclient.api.BillingFlowParams;
+//@@@USE_BILLING@@@import com.android.billingclient.api.BillingResult;
+//@@@USE_BILLING@@@import com.android.billingclient.api.ConsumeParams;
+//@@@USE_BILLING@@@import com.android.billingclient.api.ConsumeResponseListener;
+//@@@USE_BILLING@@@import com.android.billingclient.api.ProductDetails;
+//@@@USE_BILLING@@@import com.android.billingclient.api.ProductDetailsResponseListener;
+//@@@USE_BILLING@@@import com.android.billingclient.api.Purchase;
+//@@@USE_BILLING@@@import com.android.billingclient.api.PurchasesUpdatedListener;
+//@@@USE_BILLING@@@import com.android.billingclient.api.QueryProductDetailsParams;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -100,7 +102,6 @@ import java.util.List;
 import java.util.Locale;
 
 
-
 /**
  * SDL Activity
  */
@@ -110,19 +111,17 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     //
     // AdMob settings:
     //
-    private static final boolean USE_ADMOB = false;
 
     // Google AdMob Test Reward Ad: ca-app-pub-3940256099942544/5224354917
-    private static final String ADMOB_AD_REWARD_ID = "ca-app-pub-3940256099942544/5224354917";
+//@@@USE_ADMOB@@@    private static final String ADMOB_AD_REWARD_ID = "ca-app-pub-3940256099942544/5224354917";
 
 
     //
     // Play Billing settings:
     //
-    private static final boolean USE_BILLING = false;
     // change these ids to the available product ids in the play store
     // order matters for the some engine, which just uses the indices 0, 1, 2, ...
-    private static final String[] BILLING_PRODUCTS = {"paid_0", "paid_1", "paid_2"};
+//@@@USE_BILLING@@@    private static final String[] BILLING_PRODUCTS = {"paid_0", "paid_1", "paid_2"};
 
 
     /**
@@ -138,7 +137,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         return new String[]{
                 "SDL2",
                 "SDL2_image",
-                //"SDL2_mixer",
+//@@@USE_MIXER@@@                "SDL2_mixer",
                 //"SDL2_net",
                 //"SDL2_ttf",
                 "main"
@@ -150,8 +149,9 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     // some api functions:
     //
 
-    private static volatile boolean admob_ad_reward_loaded;
-    private static volatile boolean billing_loaded;
+    private static volatile boolean admob_ump_loaded = false;
+    private static volatile boolean admob_ad_reward_loaded = false;
+    private static volatile boolean billing_loaded = false;
 
     private static final int DOWNLOAD_FILE = 1;
     private static final int UPLOAD_FILE = 2;
@@ -309,6 +309,21 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         }).start();
     }
 
+    public boolean u_admob_ump_loaded() {
+        return admob_ump_loaded;
+    }
+
+    public void u_admob_ump_show() {
+        // run on main thread
+//@@@USE_ADMOB@@@        Handler mainHandler = new Handler(Looper.getMainLooper());
+//@@@USE_ADMOB@@@        Runnable myRunnable = new Runnable() {
+//@@@USE_ADMOB@@@            @Override
+//@@@USE_ADMOB@@@            public void run() {
+//@@@USE_ADMOB@@@                ump_ShowForm();
+//@@@USE_ADMOB@@@            }
+//@@@USE_ADMOB@@@        };
+//@@@USE_ADMOB@@@        mainHandler.post(myRunnable);
+    }
 
     public boolean u_admob_reward_ad_loaded() {
         return admob_ad_reward_loaded;
@@ -316,14 +331,14 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
     public void u_admob_reward_ad_show() {
         // run on main thread
-        Handler mainHandler = new Handler(Looper.getMainLooper());
-        Runnable myRunnable = new Runnable() {
-            @Override
-            public void run() {
-                admob_showRewardedVideo();
-            }
-        };
-        mainHandler.post(myRunnable);
+//@@@USE_ADMOB@@@        Handler mainHandler = new Handler(Looper.getMainLooper());
+//@@@USE_ADMOB@@@        Runnable myRunnable = new Runnable() {
+//@@@USE_ADMOB@@@            @Override
+//@@@USE_ADMOB@@@            public void run() {
+//@@@USE_ADMOB@@@                admob_showRewardedVideo();
+//@@@USE_ADMOB@@@            }
+//@@@USE_ADMOB@@@        };
+//@@@USE_ADMOB@@@        mainHandler.post(myRunnable);
     }
 
 
@@ -332,414 +347,433 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     }
 
     public void u_billing_buy(final int idx) {
-        if (!billing_loaded) {
-            Log.e(TAG, "billing not loaded");
-            return;
-        }
-        if (idx < 0 || idx >= BILLING_PRODUCTS.length) {
-            Log.wtf(TAG, "billing buy got an invalid idx?");
-            return;
-        }
-        // run on main thread
-        Handler mainHandler = new Handler(Looper.getMainLooper());
-        Runnable myRunnable = new Runnable() {
-            @Override
-            public void run() {
-                billing_buy(idx);
-            }
-        };
-        mainHandler.post(myRunnable);
+//@@@USE_BILLING@@@        if (!billing_loaded) {
+//@@@USE_BILLING@@@            Log.e(TAG, "billing not loaded");
+//@@@USE_BILLING@@@            return;
+//@@@USE_BILLING@@@        }
+//@@@USE_BILLING@@@        if (idx < 0 || idx >= BILLING_PRODUCTS.length) {
+//@@@USE_BILLING@@@            Log.wtf(TAG, "billing buy got an invalid idx?");
+//@@@USE_BILLING@@@            return;
+//@@@USE_BILLING@@@        }
+//@@@USE_BILLING@@@        // run on main thread
+//@@@USE_BILLING@@@        Handler mainHandler = new Handler(Looper.getMainLooper());
+//@@@USE_BILLING@@@        Runnable myRunnable = new Runnable() {
+//@@@USE_BILLING@@@            @Override
+//@@@USE_BILLING@@@            public void run() {
+//@@@USE_BILLING@@@                billing_buy(idx);
+//@@@USE_BILLING@@@            }
+//@@@USE_BILLING@@@        };
+//@@@USE_BILLING@@@        mainHandler.post(myRunnable);
     }
 
 
-    //
-    // UMP privacy message stuff:
-    //
-    private ConsentInformation ump_consentInformation = null;
-    private ConsentForm ump_consentForm = null;
+//@@@USE_ADMOB@@@    //
+//@@@USE_ADMOB@@@    // UMP privacy message stuff:
+//@@@USE_ADMOB@@@    //
+//@@@USE_ADMOB@@@    private ConsentInformation ump_consentInformation = null;
+//@@@USE_ADMOB@@@    private ConsentForm ump_consentForm = null;
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@    public void ump_ShowForm() {
+//@@@USE_ADMOB@@@        if (!admob_ump_loaded || ump_consentForm == null) {
+//@@@USE_ADMOB@@@            Log.e(TAG, "show form failed, no form available");
+//@@@USE_ADMOB@@@            return;
+//@@@USE_ADMOB@@@        }
+//@@@USE_ADMOB@@@        ump_consentForm.show(
+//@@@USE_ADMOB@@@                SDLActivity.this,
+//@@@USE_ADMOB@@@                new ConsentForm.OnConsentFormDismissedListener() {
+//@@@USE_ADMOB@@@                    @Override
+//@@@USE_ADMOB@@@                    public void onConsentFormDismissed(FormError formError) {
+//@@@USE_ADMOB@@@                        // Handle dismissal by reloading form.
+//@@@USE_ADMOB@@@                        Log.i(TAG, "UMP form dismessed, reloading");
+//@@@USE_ADMOB@@@                        ump_loadForm();
+//@@@USE_ADMOB@@@                    }
+//@@@USE_ADMOB@@@                });
+//@@@USE_ADMOB@@@    }
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@    public void ump_loadForm() {
+//@@@USE_ADMOB@@@        UserMessagingPlatform.loadConsentForm(
+//@@@USE_ADMOB@@@                this, new UserMessagingPlatform.OnConsentFormLoadSuccessListener() {
+//@@@USE_ADMOB@@@                    @Override
+//@@@USE_ADMOB@@@                    public void onConsentFormLoadSuccess(ConsentForm consentForm) {
+//@@@USE_ADMOB@@@                        SDLActivity.this.admob_ump_loaded = true;
+//@@@USE_ADMOB@@@                        SDLActivity.this.ump_consentForm = consentForm;
+//@@@USE_ADMOB@@@                        if (ump_consentInformation.getConsentStatus() == ConsentInformation.ConsentStatus.REQUIRED) {
+//@@@USE_ADMOB@@@                            consentForm.show(
+//@@@USE_ADMOB@@@                                    SDLActivity.this,
+//@@@USE_ADMOB@@@                                    new ConsentForm.OnConsentFormDismissedListener() {
+//@@@USE_ADMOB@@@                                        @Override
+//@@@USE_ADMOB@@@                                        public void onConsentFormDismissed(FormError formError) {
+//@@@USE_ADMOB@@@                                            // Handle dismissal by reloading form.
+//@@@USE_ADMOB@@@                                            Log.i(TAG, "UMP form dismessed, reloading");
+//@@@USE_ADMOB@@@                                            ump_loadForm();
+//@@@USE_ADMOB@@@                                        }
+//@@@USE_ADMOB@@@                                    });
+//@@@USE_ADMOB@@@                        }
+//@@@USE_ADMOB@@@                    }
+//@@@USE_ADMOB@@@                },
+//@@@USE_ADMOB@@@                new UserMessagingPlatform.OnConsentFormLoadFailureListener() {
+//@@@USE_ADMOB@@@                    @Override
+//@@@USE_ADMOB@@@                    public void onConsentFormLoadFailure(FormError formError) {
+//@@@USE_ADMOB@@@                        // Handle the error.
+//@@@USE_ADMOB@@@                        Log.i(TAG, "UMP loading user consent failed");
+//@@@USE_ADMOB@@@                    }
+//@@@USE_ADMOB@@@                });
+//@@@USE_ADMOB@@@    }
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@    public void ump_load() {
+//@@@USE_ADMOB@@@        // IAB get user consent
+//@@@USE_ADMOB@@@        // Set tag for underage of consent. Here false means users are not underage.
+//@@@USE_ADMOB@@@        ConsentRequestParameters params = new ConsentRequestParameters
+//@@@USE_ADMOB@@@                .Builder()
+//@@@USE_ADMOB@@@                .setTagForUnderAgeOfConsent(false)
+//@@@USE_ADMOB@@@                .build();
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@        ump_consentInformation = UserMessagingPlatform.getConsentInformation(this);
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@//        // test for debugging
+//@@@USE_ADMOB@@@//        iab_consentInformation.reset();
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@        ump_consentInformation.requestConsentInfoUpdate(
+//@@@USE_ADMOB@@@                this,
+//@@@USE_ADMOB@@@                params,
+//@@@USE_ADMOB@@@                new ConsentInformation.OnConsentInfoUpdateSuccessListener() {
+//@@@USE_ADMOB@@@                    @Override
+//@@@USE_ADMOB@@@                    public void onConsentInfoUpdateSuccess() {
+//@@@USE_ADMOB@@@                        // The consent information state was updated.
+//@@@USE_ADMOB@@@                        // You are now ready to check if a form is available.
+//@@@USE_ADMOB@@@                        if (ump_consentInformation.isConsentFormAvailable()) {
+//@@@USE_ADMOB@@@                            Log.i(TAG, "UMP info update succeeded, loading form...");
+//@@@USE_ADMOB@@@                            ump_loadForm();
+//@@@USE_ADMOB@@@                        } else {
+//@@@USE_ADMOB@@@                            Log.i(TAG, "UMP info update succeeded, form not available");
+//@@@USE_ADMOB@@@                        }
+//@@@USE_ADMOB@@@                    }
+//@@@USE_ADMOB@@@                },
+//@@@USE_ADMOB@@@                new ConsentInformation.OnConsentInfoUpdateFailureListener() {
+//@@@USE_ADMOB@@@                    @Override
+//@@@USE_ADMOB@@@                    public void onConsentInfoUpdateFailure(FormError formError) {
+//@@@USE_ADMOB@@@                        // Handle the error.
+//@@@USE_ADMOB@@@                        Log.i(TAG, "UMP user consent info failed");
+//@@@USE_ADMOB@@@                    }
+//@@@USE_ADMOB@@@                });
+//@@@USE_ADMOB@@@    }
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@    //
+//@@@USE_ADMOB@@@    // admob stuff:
+//@@@USE_ADMOB@@@    //
+//@@@USE_ADMOB@@@    private RewardedAd admob_rewardedAd = null;
+//@@@USE_ADMOB@@@    boolean admob_isLoading = false;
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@    private void admob_loadRewardedAd() {
+//@@@USE_ADMOB@@@        if (admob_rewardedAd == null) {
+//@@@USE_ADMOB@@@            admob_isLoading = true;
+//@@@USE_ADMOB@@@            SDLActivity.this.admob_ad_reward_loaded = false;
+//@@@USE_ADMOB@@@            AdRequest adRequest = new AdRequest.Builder().build();
+//@@@USE_ADMOB@@@            RewardedAd.load(
+//@@@USE_ADMOB@@@                    this,
+//@@@USE_ADMOB@@@                    ADMOB_AD_REWARD_ID,
+//@@@USE_ADMOB@@@                    adRequest,
+//@@@USE_ADMOB@@@                    new RewardedAdLoadCallback() {
+//@@@USE_ADMOB@@@                        @Override
+//@@@USE_ADMOB@@@                        public void onAdFailedToLoad(LoadAdError loadAdError) {
+//@@@USE_ADMOB@@@                            // Handle the error.
+//@@@USE_ADMOB@@@                            Log.d(TAG, loadAdError.getMessage());
+//@@@USE_ADMOB@@@                            admob_rewardedAd = null;
+//@@@USE_ADMOB@@@                            SDLActivity.this.admob_isLoading = false;
+//@@@USE_ADMOB@@@                            SDLActivity.this.admob_ad_reward_loaded = false;
+//@@@USE_ADMOB@@@                            //Toast.makeText(SDLActivity.this, "onAdFailedToLoad", Toast.LENGTH_SHORT).show();
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@                            // retry
+//@@@USE_ADMOB@@@                            admob_loadRewardedAdOnLooper();
+//@@@USE_ADMOB@@@                        }
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@                        @Override
+//@@@USE_ADMOB@@@                        public void onAdLoaded(RewardedAd rewardedAd) {
+//@@@USE_ADMOB@@@                            SDLActivity.this.admob_rewardedAd = rewardedAd;
+//@@@USE_ADMOB@@@                            Log.d(TAG, "onAdLoaded");
+//@@@USE_ADMOB@@@                            SDLActivity.this.admob_isLoading = false;
+//@@@USE_ADMOB@@@                            //Toast.makeText(SDLActivity.this, "onAdLoaded", Toast.LENGTH_SHORT).show();
+//@@@USE_ADMOB@@@                            SDLActivity.this.admob_ad_reward_loaded = true;
+//@@@USE_ADMOB@@@                        }
+//@@@USE_ADMOB@@@                    });
+//@@@USE_ADMOB@@@        }
+//@@@USE_ADMOB@@@    }
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@    private void admob_loadRewardedAdOnLooper() {
+//@@@USE_ADMOB@@@        // run on main thread
+//@@@USE_ADMOB@@@        Handler mainHandler = new Handler(Looper.getMainLooper());
+//@@@USE_ADMOB@@@        Runnable myRunnable = new Runnable() {
+//@@@USE_ADMOB@@@            @Override
+//@@@USE_ADMOB@@@            public void run() {
+//@@@USE_ADMOB@@@                admob_loadRewardedAd();
+//@@@USE_ADMOB@@@            }
+//@@@USE_ADMOB@@@        };
+//@@@USE_ADMOB@@@        mainHandler.post(myRunnable);
+//@@@USE_ADMOB@@@    }
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@    private void admob_showRewardedVideo() {
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@        if (admob_rewardedAd == null) {
+//@@@USE_ADMOB@@@            Log.d("TAG", "The rewarded ad wasn't ready yet.");
+//@@@USE_ADMOB@@@            return;
+//@@@USE_ADMOB@@@        }
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@        admob_rewardedAd.setFullScreenContentCallback(
+//@@@USE_ADMOB@@@                new FullScreenContentCallback() {
+//@@@USE_ADMOB@@@                    @Override
+//@@@USE_ADMOB@@@                    public void onAdShowedFullScreenContent() {
+//@@@USE_ADMOB@@@                        // Called when ad is shown.
+//@@@USE_ADMOB@@@                        Log.d(TAG, "onAdShowedFullScreenContent");
+//@@@USE_ADMOB@@@                        //Toast.makeText(SDLActivity.this, "onAdShowedFullScreenContent", Toast.LENGTH_SHORT)
+//@@@USE_ADMOB@@@                        //        .show();
+//@@@USE_ADMOB@@@                    }
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@                    @Override
+//@@@USE_ADMOB@@@                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+//@@@USE_ADMOB@@@                        // Called when ad fails to show.
+//@@@USE_ADMOB@@@                        Log.d(TAG, "onAdFailedToShowFullScreenContent");
+//@@@USE_ADMOB@@@                        // Don't forget to set the ad reference to null so you
+//@@@USE_ADMOB@@@                        // don't show the ad a second time.
+//@@@USE_ADMOB@@@                        admob_rewardedAd = null;
+//@@@USE_ADMOB@@@                        //Toast.makeText(
+//@@@USE_ADMOB@@@                        //                SDLActivity.this, "onAdFailedToShowFullScreenContent", Toast.LENGTH_SHORT)
+//@@@USE_ADMOB@@@                        //        .show();
+//@@@USE_ADMOB@@@                    }
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@                    @Override
+//@@@USE_ADMOB@@@                    public void onAdDismissedFullScreenContent() {
+//@@@USE_ADMOB@@@                        // Called when ad is dismissed.
+//@@@USE_ADMOB@@@                        // Don't forget to set the ad reference to null so you
+//@@@USE_ADMOB@@@                        // don't show the ad a second time.
+//@@@USE_ADMOB@@@                        admob_rewardedAd = null;
+//@@@USE_ADMOB@@@                        Log.d(TAG, "onAdDismissedFullScreenContent");
+//@@@USE_ADMOB@@@                        //Toast.makeText(SDLActivity.this, "onAdDismissedFullScreenContent", Toast.LENGTH_SHORT)
+//@@@USE_ADMOB@@@                        //        .show();
+//@@@USE_ADMOB@@@                        // Preload the next rewarded ad.
+//@@@USE_ADMOB@@@                        SDLActivity.this.admob_loadRewardedAd();
+//@@@USE_ADMOB@@@                    }
+//@@@USE_ADMOB@@@                });
+//@@@USE_ADMOB@@@        Activity activityContext = SDLActivity.this;
+//@@@USE_ADMOB@@@        admob_rewardedAd.show(
+//@@@USE_ADMOB@@@                activityContext,
+//@@@USE_ADMOB@@@                new OnUserEarnedRewardListener() {
+//@@@USE_ADMOB@@@                    @Override
+//@@@USE_ADMOB@@@                    public void onUserEarnedReward(RewardItem rewardItem) {
+//@@@USE_ADMOB@@@                        // Handle the reward.
+//@@@USE_ADMOB@@@                        Log.d("TAG", "The user earned the reward.");
+//@@@USE_ADMOB@@@                        //int rewardAmount = rewardItem.getAmount();
+//@@@USE_ADMOB@@@                        //String rewardType = rewardItem.getType();
+//@@@USE_ADMOB@@@                        uAdmobReward();
+//@@@USE_ADMOB@@@                    }
+//@@@USE_ADMOB@@@                });
+//@@@USE_ADMOB@@@    }
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@    public void admob_load() {
+//@@@USE_ADMOB@@@        // load AdMob
+//@@@USE_ADMOB@@@        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+//@@@USE_ADMOB@@@            @Override
+//@@@USE_ADMOB@@@            public void onInitializationComplete(InitializationStatus initializationStatus) {
+//@@@USE_ADMOB@@@            }
+//@@@USE_ADMOB@@@        });
+//@@@USE_ADMOB@@@
+//@@@USE_ADMOB@@@        admob_loadRewardedAd();
+//@@@USE_ADMOB@@@    }
 
-    public void ump_loadForm() {
-        UserMessagingPlatform.loadConsentForm(
-                this, new UserMessagingPlatform.OnConsentFormLoadSuccessListener() {
-                    @Override
-                    public void onConsentFormLoadSuccess(ConsentForm consentForm) {
-                        SDLActivity.this.ump_consentForm = consentForm;
-                        if (ump_consentInformation.getConsentStatus() == ConsentInformation.ConsentStatus.REQUIRED) {
-                            consentForm.show(
-                                    SDLActivity.this,
-                                    new ConsentForm.OnConsentFormDismissedListener() {
-                                        @Override
-                                        public void onConsentFormDismissed(FormError formError) {
-                                            // Handle dismissal by reloading form.
-                                            Log.i(TAG, "UMP form dismessed, reloading");
-                                            ump_loadForm();
-                                        }
-                                    });
-                        }
-                    }
-                },
-                new UserMessagingPlatform.OnConsentFormLoadFailureListener() {
-                    @Override
-                    public void onConsentFormLoadFailure(FormError formError) {
-                        // Handle the error.
-                        Log.i(TAG, "UMP loading user consent failed");
-                    }
-                });
-    }
 
-    public void ump_load() {
-        // IAB get user consent
-        // Set tag for underage of consent. Here false means users are not underage.
-        ConsentRequestParameters params = new ConsentRequestParameters
-                .Builder()
-                .setTagForUnderAgeOfConsent(false)
-                .build();
-
-        ump_consentInformation = UserMessagingPlatform.getConsentInformation(this);
-
-//        // test for debugging
-//        iab_consentInformation.reset();
-
-        ump_consentInformation.requestConsentInfoUpdate(
-                this,
-                params,
-                new ConsentInformation.OnConsentInfoUpdateSuccessListener() {
-                    @Override
-                    public void onConsentInfoUpdateSuccess() {
-                        // The consent information state was updated.
-                        // You are now ready to check if a form is available.
-                        if (ump_consentInformation.isConsentFormAvailable()) {
-                            Log.i(TAG, "UMP info update succeeded, loading form...");
-                            ump_loadForm();
-                        } else {
-                            Log.i(TAG, "UMP info update succeeded, form not available");
-                        }
-                    }
-                },
-                new ConsentInformation.OnConsentInfoUpdateFailureListener() {
-                    @Override
-                    public void onConsentInfoUpdateFailure(FormError formError) {
-                        // Handle the error.
-                        Log.i(TAG, "UMP user consent info failed");
-                    }
-                });
-    }
-
-
-    //
-    // admob stuff:
-    //
-    private RewardedAd admob_rewardedAd = null;
-    boolean admob_isLoading = false;
-
-    private void admob_loadRewardedAd() {
-        if (admob_rewardedAd == null) {
-            admob_isLoading = true;
-            SDLActivity.this.admob_ad_reward_loaded = false;
-            AdRequest adRequest = new AdRequest.Builder().build();
-            RewardedAd.load(
-                    this,
-                    ADMOB_AD_REWARD_ID,
-                    adRequest,
-                    new RewardedAdLoadCallback() {
-                        @Override
-                        public void onAdFailedToLoad(LoadAdError loadAdError) {
-                            // Handle the error.
-                            Log.d(TAG, loadAdError.getMessage());
-                            admob_rewardedAd = null;
-                            SDLActivity.this.admob_isLoading = false;
-                            SDLActivity.this.admob_ad_reward_loaded = false;
-                            //Toast.makeText(SDLActivity.this, "onAdFailedToLoad", Toast.LENGTH_SHORT).show();
-
-                            // retry
-                            admob_loadRewardedAdOnLooper();
-                        }
-
-                        @Override
-                        public void onAdLoaded(RewardedAd rewardedAd) {
-                            SDLActivity.this.admob_rewardedAd = rewardedAd;
-                            Log.d(TAG, "onAdLoaded");
-                            SDLActivity.this.admob_isLoading = false;
-                            //Toast.makeText(SDLActivity.this, "onAdLoaded", Toast.LENGTH_SHORT).show();
-                            SDLActivity.this.admob_ad_reward_loaded = true;
-                        }
-                    });
-        }
-    }
-
-    private void admob_loadRewardedAdOnLooper() {
-        // run on main thread
-        Handler mainHandler = new Handler(Looper.getMainLooper());
-        Runnable myRunnable = new Runnable() {
-            @Override
-            public void run() {
-                admob_loadRewardedAd();
-            }
-        };
-        mainHandler.post(myRunnable);
-    }
-
-    private void admob_showRewardedVideo() {
-
-        if (admob_rewardedAd == null) {
-            Log.d("TAG", "The rewarded ad wasn't ready yet.");
-            return;
-        }
-
-        admob_rewardedAd.setFullScreenContentCallback(
-                new FullScreenContentCallback() {
-                    @Override
-                    public void onAdShowedFullScreenContent() {
-                        // Called when ad is shown.
-                        Log.d(TAG, "onAdShowedFullScreenContent");
-                        //Toast.makeText(SDLActivity.this, "onAdShowedFullScreenContent", Toast.LENGTH_SHORT)
-                        //        .show();
-                    }
-
-                    @Override
-                    public void onAdFailedToShowFullScreenContent(AdError adError) {
-                        // Called when ad fails to show.
-                        Log.d(TAG, "onAdFailedToShowFullScreenContent");
-                        // Don't forget to set the ad reference to null so you
-                        // don't show the ad a second time.
-                        admob_rewardedAd = null;
-                        //Toast.makeText(
-                        //                SDLActivity.this, "onAdFailedToShowFullScreenContent", Toast.LENGTH_SHORT)
-                        //        .show();
-                    }
-
-                    @Override
-                    public void onAdDismissedFullScreenContent() {
-                        // Called when ad is dismissed.
-                        // Don't forget to set the ad reference to null so you
-                        // don't show the ad a second time.
-                        admob_rewardedAd = null;
-                        Log.d(TAG, "onAdDismissedFullScreenContent");
-                        //Toast.makeText(SDLActivity.this, "onAdDismissedFullScreenContent", Toast.LENGTH_SHORT)
-                        //        .show();
-                        // Preload the next rewarded ad.
-                        SDLActivity.this.admob_loadRewardedAd();
-                    }
-                });
-        Activity activityContext = SDLActivity.this;
-        admob_rewardedAd.show(
-                activityContext,
-                new OnUserEarnedRewardListener() {
-                    @Override
-                    public void onUserEarnedReward(RewardItem rewardItem) {
-                        // Handle the reward.
-                        Log.d("TAG", "The user earned the reward.");
-                        //int rewardAmount = rewardItem.getAmount();
-                        //String rewardType = rewardItem.getType();
-                        uAdmobReward();
-                    }
-                });
-    }
-
-    public void admob_load() {
-        // load AdMob
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-
-        admob_loadRewardedAd();
-    }
-
-
-    //
-    // play billing stuff:
-    //
-    private BillingClient billing_billingClient = null;
-    List<ProductDetails> billing_productDetailsList = null;
-
-    private void billing_buy(int idx) {
-        if(!billing_loaded || billing_productDetailsList == null) {
-            Log.e(TAG, "not loaded or productDetailsList is null");
-            return;
-        }
-        ProductDetails product = null;
-        for (ProductDetails p : billing_productDetailsList) {
-            if (p.getProductId().equals(BILLING_PRODUCTS[idx])) {
-                product = p;
-                break;
-            }
-        }
-        if (product == null) {
-            Log.e(TAG, "product not found!");
-            return;
-        }
-
-        ArrayList<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = new ArrayList<>();
-        productDetailsParamsList.add(BillingFlowParams.ProductDetailsParams.newBuilder()
-                .setProductDetails(product)
-                .build());
-
-        BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
-                .setProductDetailsParamsList(productDetailsParamsList)
-                .build();
-
-        // launch the billing flow
-        BillingResult billingResult = billing_billingClient.launchBillingFlow(this, billingFlowParams);
-        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-            Log.i(TAG, "launched billing flow");
-        } else {
-            Log.e(TAG, "failed to launch billing flow");
-        }
-    }
-
-    private void billing_query_products() {
-        ArrayList<QueryProductDetailsParams.Product> products = new ArrayList<>();
-        for (String billingProduct : BILLING_PRODUCTS) {
-            products.add(QueryProductDetailsParams.Product.newBuilder()
-                    .setProductId(billingProduct)
-                    .setProductType(BillingClient.ProductType.INAPP)
-                    .build());
-        }
-        QueryProductDetailsParams queryProductDetailsParams =
-                QueryProductDetailsParams.newBuilder()
-                        .setProductList(products)
-                        .build();
-
-        billing_billingClient.queryProductDetailsAsync(
-                queryProductDetailsParams,
-                new ProductDetailsResponseListener() {
-                    public void onProductDetailsResponse(BillingResult billingResult,
-                                                         List<ProductDetails> productDetailsList) {
-                        // check billingResult
-                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                            Log.i(TAG, "got billing product infos");
-                        } else {
-                            Log.e(TAG, "failed to get billing product infos");
-                            return;
-                        }
-                        // process returned productDetailsList
-                        if (BILLING_PRODUCTS.length != productDetailsList.size()) {
-                            Log.e(TAG, "got not the right number of products");
-                            billing_loaded = false;
-                            return;
-                        }
-                        boolean found_all = true;
-                        for (int i = 0; i < BILLING_PRODUCTS.length; i++) {
-                            boolean found = false;
-                            for (int j = 0; j < productDetailsList.size(); j++) {
-                                if (productDetailsList.get(j).getProductId().equals(BILLING_PRODUCTS[i])) {
-                                    found = true;
-                                    break;
-                                }
-                            }
-                            if (!found) {
-                                found_all = false;
-                                break;
-                            }
-                        }
-
-                        if (found_all) {
-                            Log.i(TAG, "found all products");
-                            billing_productDetailsList = productDetailsList;
-                        } else {
-                            Log.e(TAG, "Found not all products by name");
-                        }
-                        billing_loaded = found_all;
-
-                    }
-                }
-        );
-    }
-
-    private void billing_handlePurchase(Purchase purchase) {
-        if (purchase.getPurchaseState() != Purchase.PurchaseState.PURCHASED) {
-            Log.i(TAG, "purchase not purchased...");
-            return;
-        }
-        Log.e(TAG, "purchase: " + purchase.getPurchaseToken());
-        boolean all_consumed = true;
-        for (String product : purchase.getProducts()) {
-            boolean consumed = false;
-            for (int i = 0; i < BILLING_PRODUCTS.length; i++) {
-                if (product.equals(BILLING_PRODUCTS[i])) {
-                    Log.e(TAG, "purchase: " + purchase.getPurchaseToken() + " product: " + product);
-                    consumed = uBillingPurchased(i);
-                    break;
-                }
-            }
-            if (!consumed) {
-                Log.e(TAG, "product not found: " + product);
-                all_consumed = false;
-            }
-        }
-
-        if(!all_consumed) {
-            Log.e(TAG, "consuming the purchase failed");
-            return;
-        }
-
-        ConsumeParams consumeParams =
-                ConsumeParams.newBuilder()
-                        .setPurchaseToken(purchase.getPurchaseToken())
-                        .build();
-
-        ConsumeResponseListener listener = new ConsumeResponseListener() {
-            @Override
-            public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    // Handle the success of the consume operation.
-                    Log.i(TAG, "consumed the purchase");
-                } else {
-                    Log.e(TAG, "failed to consume the purchase?");
-                }
-            }
-        };
-
-        billing_billingClient.consumeAsync(consumeParams, listener);
-    }
-
-    private PurchasesUpdatedListener billing_purchasesUpdatedListener = new PurchasesUpdatedListener() {
-        @Override
-        public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
-            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                Log.i(TAG, "got a purchase");
-            } else {
-                Log.e(TAG, "purchase update failed?");
-                return;
-            }
-
-            for (Purchase p : purchases) {
-                billing_handlePurchase(p);
-            }
-        }
-    };
-    private BillingClientStateListener billing_billingClientStateListener = new BillingClientStateListener() {
-        @Override
-        public void onBillingSetupFinished(BillingResult billingResult) {
-            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                Log.i(TAG, "billing is ready");
-                billing_query_products();
-            } else {
-                Log.e(TAG, "failed to built billing api");
-            }
-        }
-
-        @Override
-        public void onBillingServiceDisconnected() {
-            // Try to restart the connection on the next request to
-            // Google Play by calling the startConnection() method.
-            Log.i(TAG, "billing disconnected, reconnect...");
-            billing_billingClient.startConnection(billing_billingClientStateListener);
-        }
-    };
-
-    private void billing_load() {
-        billing_loaded = false;
-
-        billing_billingClient = BillingClient.newBuilder(this)
-                .setListener(billing_purchasesUpdatedListener)
-                .enablePendingPurchases()
-                .build();
-
-        billing_billingClient.startConnection(billing_billingClientStateListener);
-    }
+//@@@USE_BILLING@@@    //
+//@@@USE_BILLING@@@    // play billing stuff:
+//@@@USE_BILLING@@@    //
+//@@@USE_BILLING@@@    private BillingClient billing_billingClient = null;
+//@@@USE_BILLING@@@    List<ProductDetails> billing_productDetailsList = null;
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@    private void billing_buy(int idx) {
+//@@@USE_BILLING@@@        if(!billing_loaded || billing_productDetailsList == null) {
+//@@@USE_BILLING@@@            Log.e(TAG, "not loaded or productDetailsList is null");
+//@@@USE_BILLING@@@            return;
+//@@@USE_BILLING@@@        }
+//@@@USE_BILLING@@@        ProductDetails product = null;
+//@@@USE_BILLING@@@        for (ProductDetails p : billing_productDetailsList) {
+//@@@USE_BILLING@@@            if (p.getProductId().equals(BILLING_PRODUCTS[idx])) {
+//@@@USE_BILLING@@@                product = p;
+//@@@USE_BILLING@@@                break;
+//@@@USE_BILLING@@@            }
+//@@@USE_BILLING@@@        }
+//@@@USE_BILLING@@@        if (product == null) {
+//@@@USE_BILLING@@@            Log.e(TAG, "product not found!");
+//@@@USE_BILLING@@@            return;
+//@@@USE_BILLING@@@        }
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@        ArrayList<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = new ArrayList<>();
+//@@@USE_BILLING@@@        productDetailsParamsList.add(BillingFlowParams.ProductDetailsParams.newBuilder()
+//@@@USE_BILLING@@@                .setProductDetails(product)
+//@@@USE_BILLING@@@                .build());
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@        BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+//@@@USE_BILLING@@@                .setProductDetailsParamsList(productDetailsParamsList)
+//@@@USE_BILLING@@@                .build();
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@        // launch the billing flow
+//@@@USE_BILLING@@@        BillingResult billingResult = billing_billingClient.launchBillingFlow(this, billingFlowParams);
+//@@@USE_BILLING@@@        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+//@@@USE_BILLING@@@            Log.i(TAG, "launched billing flow");
+//@@@USE_BILLING@@@        } else {
+//@@@USE_BILLING@@@            Log.e(TAG, "failed to launch billing flow");
+//@@@USE_BILLING@@@        }
+//@@@USE_BILLING@@@    }
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@    private void billing_query_products() {
+//@@@USE_BILLING@@@        ArrayList<QueryProductDetailsParams.Product> products = new ArrayList<>();
+//@@@USE_BILLING@@@        for (String billingProduct : BILLING_PRODUCTS) {
+//@@@USE_BILLING@@@            products.add(QueryProductDetailsParams.Product.newBuilder()
+//@@@USE_BILLING@@@                    .setProductId(billingProduct)
+//@@@USE_BILLING@@@                    .setProductType(BillingClient.ProductType.INAPP)
+//@@@USE_BILLING@@@                    .build());
+//@@@USE_BILLING@@@        }
+//@@@USE_BILLING@@@        QueryProductDetailsParams queryProductDetailsParams =
+//@@@USE_BILLING@@@                QueryProductDetailsParams.newBuilder()
+//@@@USE_BILLING@@@                        .setProductList(products)
+//@@@USE_BILLING@@@                        .build();
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@        billing_billingClient.queryProductDetailsAsync(
+//@@@USE_BILLING@@@                queryProductDetailsParams,
+//@@@USE_BILLING@@@                new ProductDetailsResponseListener() {
+//@@@USE_BILLING@@@                    public void onProductDetailsResponse(BillingResult billingResult,
+//@@@USE_BILLING@@@                                                         List<ProductDetails> productDetailsList) {
+//@@@USE_BILLING@@@                        // check billingResult
+//@@@USE_BILLING@@@                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+//@@@USE_BILLING@@@                            Log.i(TAG, "got billing product infos");
+//@@@USE_BILLING@@@                        } else {
+//@@@USE_BILLING@@@                            Log.e(TAG, "failed to get billing product infos");
+//@@@USE_BILLING@@@                            return;
+//@@@USE_BILLING@@@                        }
+//@@@USE_BILLING@@@                        // process returned productDetailsList
+//@@@USE_BILLING@@@                        if (BILLING_PRODUCTS.length != productDetailsList.size()) {
+//@@@USE_BILLING@@@                            Log.e(TAG, "got not the right number of products");
+//@@@USE_BILLING@@@                            billing_loaded = false;
+//@@@USE_BILLING@@@                            return;
+//@@@USE_BILLING@@@                        }
+//@@@USE_BILLING@@@                        boolean found_all = true;
+//@@@USE_BILLING@@@                        for (int i = 0; i < BILLING_PRODUCTS.length; i++) {
+//@@@USE_BILLING@@@                            boolean found = false;
+//@@@USE_BILLING@@@                            for (int j = 0; j < productDetailsList.size(); j++) {
+//@@@USE_BILLING@@@                                if (productDetailsList.get(j).getProductId().equals(BILLING_PRODUCTS[i])) {
+//@@@USE_BILLING@@@                                    found = true;
+//@@@USE_BILLING@@@                                    break;
+//@@@USE_BILLING@@@                                }
+//@@@USE_BILLING@@@                            }
+//@@@USE_BILLING@@@                            if (!found) {
+//@@@USE_BILLING@@@                                found_all = false;
+//@@@USE_BILLING@@@                                break;
+//@@@USE_BILLING@@@                            }
+//@@@USE_BILLING@@@                        }
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@                        if (found_all) {
+//@@@USE_BILLING@@@                            Log.i(TAG, "found all products");
+//@@@USE_BILLING@@@                            billing_productDetailsList = productDetailsList;
+//@@@USE_BILLING@@@                        } else {
+//@@@USE_BILLING@@@                            Log.e(TAG, "Found not all products by name");
+//@@@USE_BILLING@@@                        }
+//@@@USE_BILLING@@@                        billing_loaded = found_all;
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@                    }
+//@@@USE_BILLING@@@                }
+//@@@USE_BILLING@@@        );
+//@@@USE_BILLING@@@    }
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@    private void billing_handlePurchase(Purchase purchase) {
+//@@@USE_BILLING@@@        if (purchase.getPurchaseState() != Purchase.PurchaseState.PURCHASED) {
+//@@@USE_BILLING@@@            Log.i(TAG, "purchase not purchased...");
+//@@@USE_BILLING@@@            return;
+//@@@USE_BILLING@@@        }
+//@@@USE_BILLING@@@        Log.e(TAG, "purchase: " + purchase.getPurchaseToken());
+//@@@USE_BILLING@@@        boolean all_consumed = true;
+//@@@USE_BILLING@@@        for (String product : purchase.getProducts()) {
+//@@@USE_BILLING@@@            boolean consumed = false;
+//@@@USE_BILLING@@@            for (int i = 0; i < BILLING_PRODUCTS.length; i++) {
+//@@@USE_BILLING@@@                if (product.equals(BILLING_PRODUCTS[i])) {
+//@@@USE_BILLING@@@                    Log.e(TAG, "purchase: " + purchase.getPurchaseToken() + " product: " + product);
+//@@@USE_BILLING@@@                    consumed = uBillingPurchased(i);
+//@@@USE_BILLING@@@                    break;
+//@@@USE_BILLING@@@                }
+//@@@USE_BILLING@@@            }
+//@@@USE_BILLING@@@            if (!consumed) {
+//@@@USE_BILLING@@@                Log.e(TAG, "product not found: " + product);
+//@@@USE_BILLING@@@                all_consumed = false;
+//@@@USE_BILLING@@@            }
+//@@@USE_BILLING@@@        }
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@        if(!all_consumed) {
+//@@@USE_BILLING@@@            Log.e(TAG, "consuming the purchase failed");
+//@@@USE_BILLING@@@            return;
+//@@@USE_BILLING@@@        }
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@        ConsumeParams consumeParams =
+//@@@USE_BILLING@@@                ConsumeParams.newBuilder()
+//@@@USE_BILLING@@@                        .setPurchaseToken(purchase.getPurchaseToken())
+//@@@USE_BILLING@@@                        .build();
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@        ConsumeResponseListener listener = new ConsumeResponseListener() {
+//@@@USE_BILLING@@@            @Override
+//@@@USE_BILLING@@@            public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
+//@@@USE_BILLING@@@                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+//@@@USE_BILLING@@@                    // Handle the success of the consume operation.
+//@@@USE_BILLING@@@                    Log.i(TAG, "consumed the purchase");
+//@@@USE_BILLING@@@                } else {
+//@@@USE_BILLING@@@                    Log.e(TAG, "failed to consume the purchase?");
+//@@@USE_BILLING@@@                }
+//@@@USE_BILLING@@@            }
+//@@@USE_BILLING@@@        };
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@        billing_billingClient.consumeAsync(consumeParams, listener);
+//@@@USE_BILLING@@@    }
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@    private PurchasesUpdatedListener billing_purchasesUpdatedListener = new PurchasesUpdatedListener() {
+//@@@USE_BILLING@@@        @Override
+//@@@USE_BILLING@@@        public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
+//@@@USE_BILLING@@@            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+//@@@USE_BILLING@@@                Log.i(TAG, "got a purchase");
+//@@@USE_BILLING@@@            } else {
+//@@@USE_BILLING@@@                Log.e(TAG, "purchase update failed?");
+//@@@USE_BILLING@@@                return;
+//@@@USE_BILLING@@@            }
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@            for (Purchase p : purchases) {
+//@@@USE_BILLING@@@                billing_handlePurchase(p);
+//@@@USE_BILLING@@@            }
+//@@@USE_BILLING@@@        }
+//@@@USE_BILLING@@@    };
+//@@@USE_BILLING@@@    private BillingClientStateListener billing_billingClientStateListener = new BillingClientStateListener() {
+//@@@USE_BILLING@@@        @Override
+//@@@USE_BILLING@@@        public void onBillingSetupFinished(BillingResult billingResult) {
+//@@@USE_BILLING@@@            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+//@@@USE_BILLING@@@                Log.i(TAG, "billing is ready");
+//@@@USE_BILLING@@@                billing_query_products();
+//@@@USE_BILLING@@@            } else {
+//@@@USE_BILLING@@@                Log.e(TAG, "failed to built billing api");
+//@@@USE_BILLING@@@            }
+//@@@USE_BILLING@@@        }
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@        @Override
+//@@@USE_BILLING@@@        public void onBillingServiceDisconnected() {
+//@@@USE_BILLING@@@            // Try to restart the connection on the next request to
+//@@@USE_BILLING@@@            // Google Play by calling the startConnection() method.
+//@@@USE_BILLING@@@            Log.i(TAG, "billing disconnected, reconnect...");
+//@@@USE_BILLING@@@            billing_billingClient.startConnection(billing_billingClientStateListener);
+//@@@USE_BILLING@@@        }
+//@@@USE_BILLING@@@    };
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@    private void billing_load() {
+//@@@USE_BILLING@@@        billing_loaded = false;
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@        billing_billingClient = BillingClient.newBuilder(this)
+//@@@USE_BILLING@@@                .setListener(billing_purchasesUpdatedListener)
+//@@@USE_BILLING@@@                .enablePendingPurchases()
+//@@@USE_BILLING@@@                .build();
+//@@@USE_BILLING@@@
+//@@@USE_BILLING@@@        billing_billingClient.startConnection(billing_billingClientStateListener);
+//@@@USE_BILLING@@@    }
 
 
     //
@@ -988,13 +1022,9 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         Log.v(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
 
-        if(USE_ADMOB) {
-            ump_load();
-            admob_load();
-        }
-        if(USE_BILLING) {
-            billing_load();
-        }
+//@@@USE_ADMOB@@@        ump_load();
+//@@@USE_ADMOB@@@        admob_load();
+//@@@USE_BILLING@@@        billing_load();
 
         try {
             Thread.currentThread().setName("SDLActivity");
@@ -1244,9 +1274,9 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     protected void onDestroy() {
         Log.v(TAG, "onDestroy()");
 
-        if (billing_billingClient!= null) {
-            billing_billingClient.endConnection();
-        }
+//@@@USE_BILLING@@@        if (billing_billingClient!= null) {
+//@@@USE_BILLING@@@            billing_billingClient.endConnection();
+//@@@USE_BILLING@@@        }
 
         if (mHIDDeviceManager != null) {
             HIDDeviceManager.release(mHIDDeviceManager);
@@ -1339,6 +1369,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
     /* Transition to next state */
     private static boolean main_running = false;
+
     public static void handleNativeState() {
 
         if (mNextNativeState == mCurrentNativeState) {
@@ -1372,19 +1403,19 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                     // This is the entry point to the C app.
                     // Start up the C app thread and enable sensor input for the first time
                     // FIXME: Why aren't we enabling sensor input at start?
-					
-					// Added, because some got some assumptions wrong (double init)
-					if(main_running) {
+
+                    // Added, because some got some assumptions wrong (double init)
+                    if (main_running) {
                         Log.e(TAG, "main already running? Restarting the app...");
                         Intent mStartActivity = new Intent(getContext(), SDLActivity.class);
                         int mPendingIntentId = 123456;
-                        PendingIntent mPendingIntent = PendingIntent.getActivity(getContext(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-                        AlarmManager mgr = (AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
+                        PendingIntent mPendingIntent = PendingIntent.getActivity(getContext(), mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                        AlarmManager mgr = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
                         mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
                         System.exit(0);
                     }
                     main_running = true;
-					
+
                     mSDLThread = new Thread(new SDLMain(), "SDLThread");
                     mSurface.enableSensor(Sensor.TYPE_ACCELEROMETER, true);
                     mSDLThread.start();
@@ -1721,7 +1752,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         }
 
         Log.v(TAG, "setOrientation() requestedOrientation=" + req + " width=" + w + " height=" + h + " resizable=" + resizable + " hint=" + hint);
-        
+
         // use the users orientation
         // mSingleton.setRequestedOrientation(req);
         mSingleton.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);

@@ -5,14 +5,14 @@
     android:installLocation="auto">
 
     <!-- For OPTION_FETCH -->
-    <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
+    <!--@@@USE_FETCH@@@ <uses-permission android:name="android.permission.INTERNET" /> @@@USE_FETCH@@@-->
 
     <!-- For AdMob: -->
     <!-- Also see the admob app id in the application section below! -->
-    <!-- <uses-permission android:name="com.google.android.gms.permission.AD_ID" /> -->
+    <!--@@@USE_ADMOB@@@ <uses-permission android:name="com.google.android.gms.permission.AD_ID" />  @@@USE_ADMOB@@@-->
 
     <!-- For Play Billing: -->
-    <!-- <uses-permission android:name="com.android.vending.BILLING" /> -->
+    <!--@@@USE_BILLING@@@ <uses-permission android:name="com.android.vending.BILLING" /> @@@USE_BILLING@@@-->
 
 
 
@@ -71,9 +71,9 @@
         <!-- Including the dependency in build.gradle already needs an app id. -->
         <!-- To remove, also remove the admob_* stuff in SDLActivity. -->
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
-         <meta-data
-             android:name="com.google.android.gms.ads.APPLICATION_ID"
-             android:value="ca-app-pub-3940256099942544~3347511713"/>
+        <!--@@@USE_ADMOB@@@  <meta-data	@@@USE_ADMOB@@@-->
+        <!--@@@USE_ADMOB@@@      android:name="com.google.android.gms.ads.APPLICATION_ID" @@@USE_ADMOB@@@-->
+        <!--@@@USE_ADMOB@@@      android:value="ca-app-pub-3940256099942544~3347511713"/> @@@USE_ADMOB@@@-->
 
 
         <!-- Example of setting SDL hints from AndroidManifest.xml:
