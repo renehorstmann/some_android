@@ -146,6 +146,11 @@ if __name__ == '__main__':
     DOMAIN = sys.argv[2]
     APP = sys.argv[3]
     
+    if '_' in DOMAIN_NAMESPACE or '_' in DOMAIN or '_' in APP:
+        print("package name invalid ( '_' not valid )")
+        print_help()
+    
+    
     if 'use_mixer' in sys.argv[4:]:
         USE_MIXER = True
     

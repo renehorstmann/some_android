@@ -1404,15 +1404,28 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                     // Start up the C app thread and enable sensor input for the first time
                     // FIXME: Why aren't we enabling sensor input at start?
 
-                    // Added, because some got some assumptions wrong (double init)
+                    // Added, because sometimes some got some assumptions wrong (double init)
+                    // the C app MUST close before restart, so exiting the app...
                     if (main_running) {
-                        Log.e(TAG, "main already running? Restarting the app...");
-                        Intent mStartActivity = new Intent(getContext(), SDLActivity.class);
-                        int mPendingIntentId = 123456;
-                        PendingIntent mPendingIntent = PendingIntent.getActivity(getContext(), mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-                        AlarmManager mgr = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-                        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                        try {
+                            Log.e(TAG, "main already running? Restarting the app...");
+                            Intent mStartActivity = new Intent(getContext(), SDLActivity.class);
+                            int mPendingIntentId = 123456;
+                            PendingIntent mPendingIntent = PendingIntent.getActivity(getContext(), 
+                                    mPendingIntentId, mStartActivity, 
+                                    PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
+                            AlarmManager mgr = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+                            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                        } catch (Exception e) {
+                            try {
+                                Log.e(TAG, "main already running? Restart failed");
+                                Toast.makeText(getContext(), "Please restart the app!", Toast.LENGTH_LONG).show();
+                            } catch (Exception e2) {
+                                Log.e(TAG, "main already running? Toast failed, wtf?");
+                            }
+                        }
                         System.exit(0);
+                        return;
                     }
                     main_running = true;
 
