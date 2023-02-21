@@ -226,6 +226,8 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             intent.setType("image/gif");
         } else if (lower.endsWith(".jpg") || lower.endsWith("jpeg")) {
             intent.setType("image/jpeg");
+        } else {
+            intent.setType("*/*");
         }
         intent.putExtra(Intent.EXTRA_TITLE, file);
 
@@ -246,6 +248,8 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             intent.setType("image/gif");
         } else if (lower.endsWith(".jpg") || lower.endsWith("jpeg")) {
             intent.setType("image/jpeg");
+        } else {
+            intent.setType("*/*");
         }
         intent.putExtra(Intent.EXTRA_TITLE, file);
 
