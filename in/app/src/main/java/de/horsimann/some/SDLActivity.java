@@ -576,11 +576,16 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 //@@@USE_ADMOB@@@
 //@@@USE_ADMOB@@@    public void admob_load() {
 //@@@USE_ADMOB@@@        // load AdMob
-//@@@USE_ADMOB@@@        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-//@@@USE_ADMOB@@@            @Override
-//@@@USE_ADMOB@@@            public void onInitializationComplete(InitializationStatus initializationStatus) {
-//@@@USE_ADMOB@@@            }
-//@@@USE_ADMOB@@@        });
+//@@@USE_ADMOB@@@        try {
+//@@@USE_ADMOB@@@            MobileAds.initialize(this, new OnInitializationCompleteListener() {
+//@@@USE_ADMOB@@@                @Override
+//@@@USE_ADMOB@@@                public void onInitializationComplete(InitializationStatus initializationStatus) {
+//@@@USE_ADMOB@@@                }
+//@@@USE_ADMOB@@@            });
+//@@@USE_ADMOB@@@        } catch(Exception e) {
+//@@@USE_ADMOB@@@            Log.e(TAG, "MobileAds.initialize failed...");
+//@@@USE_ADMOB@@@            return;
+//@@@USE_ADMOB@@@        }
 //@@@USE_ADMOB@@@
 //@@@USE_ADMOB@@@        admob_loadRewardedAd();
 //@@@USE_ADMOB@@@    }
