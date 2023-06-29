@@ -100,6 +100,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -214,46 +216,54 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     }
 
     public void e_io_offer_file_as_download(String file) {
-        Log.d(TAG, "e_io_offer_file_as_download: " + file);
-        download_file = getFilesDir().getAbsolutePath() + "/" + file;
+        try {
+            Log.d(TAG, "e_io_offer_file_as_download: " + file);
+            download_file = getFilesDir().getAbsolutePath() + "/" + file;
 
-        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        String lower = file.toLowerCase();
-        if (lower.endsWith(".png")) {
-            intent.setType("image/png");
-        } else if (lower.endsWith(".gif")) {
-            intent.setType("image/gif");
-        } else if (lower.endsWith(".jpg") || lower.endsWith("jpeg")) {
-            intent.setType("image/jpeg");
-        } else {
-            intent.setType("*/*");
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            String lower = file.toLowerCase();
+            if (lower.endsWith(".png")) {
+                intent.setType("image/png");
+            } else if (lower.endsWith(".gif")) {
+                intent.setType("image/gif");
+            } else if (lower.endsWith(".jpg") || lower.endsWith("jpeg")) {
+                intent.setType("image/jpeg");
+            } else {
+                intent.setType("*/*");
+            }
+            intent.putExtra(Intent.EXTRA_TITLE, file);
+
+            startActivityForResult(intent, DOWNLOAD_FILE);
+        } catch (Exception e) {
+            Log.e(TAG, "e_io_offer_file_as_download failed: " + e.toString());
         }
-        intent.putExtra(Intent.EXTRA_TITLE, file);
-
-        startActivityForResult(intent, DOWNLOAD_FILE);
     }
 
 
     public void e_io_ask_for_file_upload(String file) {
-        Log.d(TAG, "e_io_ask_for_file_upload: " + file);
-        upload_file = getFilesDir().getAbsolutePath() + "/" + file;
+        try {
+            Log.d(TAG, "e_io_ask_for_file_upload: " + file);
+            upload_file = getFilesDir().getAbsolutePath() + "/" + file;
 
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        String lower = file.toLowerCase();
-        if (lower.endsWith(".png")) {
-            intent.setType("image/png");
-        } else if (lower.endsWith(".gif")) {
-            intent.setType("image/gif");
-        } else if (lower.endsWith(".jpg") || lower.endsWith("jpeg")) {
-            intent.setType("image/jpeg");
-        } else {
-            intent.setType("*/*");
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            String lower = file.toLowerCase();
+            if (lower.endsWith(".png")) {
+                intent.setType("image/png");
+            } else if (lower.endsWith(".gif")) {
+                intent.setType("image/gif");
+            } else if (lower.endsWith(".jpg") || lower.endsWith("jpeg")) {
+                intent.setType("image/jpeg");
+            } else {
+                intent.setType("*/*");
+            }
+            intent.putExtra(Intent.EXTRA_TITLE, file);
+
+            startActivityForResult(intent, UPLOAD_FILE);
+        } catch (Exception e) {
+            Log.e(TAG, "e_io_ask_for_file_upload failed: " + e.toString());
         }
-        intent.putExtra(Intent.EXTRA_TITLE, file);
-
-        startActivityForResult(intent, UPLOAD_FILE);
     }
 
 
@@ -305,28 +315,36 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     // mode 0 = get
     // mode 1 = pose
     public void u_fetch_request(String url, int mode, int fetch_idx) {
-        Log.d(TAG, "u_fetch_request: " + url + " mode=" + mode);
-        new Thread(new Runnable() {
-            public void run() {
-                u_fetch_request_thread_fn(url, mode, fetch_idx);
-            }
-        }).start();
+        try {
+            Log.d(TAG, "u_fetch_request: " + url + " mode=" + mode);
+            new Thread(new Runnable() {
+                public void run() {
+                    u_fetch_request_thread_fn(url, mode, fetch_idx);
+                }
+            }).start();
+        } catch (Exception e) {
+            Log.e(TAG, "u_fetch_request failed: " + e.toString());
+        }
     }
 
     public boolean u_admob_ump_loaded() {
         return admob_ump_loaded;
     }
 
-    public void u_admob_ump_show() {
-        // run on main thread
-//@@@USE_ADMOB@@@        Handler mainHandler = new Handler(Looper.getMainLooper());
-//@@@USE_ADMOB@@@        Runnable myRunnable = new Runnable() {
-//@@@USE_ADMOB@@@            @Override
-//@@@USE_ADMOB@@@            public void run() {
-//@@@USE_ADMOB@@@                ump_ShowForm();
-//@@@USE_ADMOB@@@            }
-//@@@USE_ADMOB@@@        };
-//@@@USE_ADMOB@@@        mainHandler.post(myRunnable);
+public void u_admob_ump_show() {
+//@@@USE_ADMOB@@@        try {
+//@@@USE_ADMOB@@@            // run on main thread
+//@@@USE_ADMOB@@@            Handler mainHandler = new Handler(Looper.getMainLooper());
+//@@@USE_ADMOB@@@            Runnable myRunnable = new Runnable() {
+//@@@USE_ADMOB@@@                @Override
+//@@@USE_ADMOB@@@                public void run() {
+//@@@USE_ADMOB@@@                    ump_ShowForm();
+//@@@USE_ADMOB@@@                }
+//@@@USE_ADMOB@@@            };
+//@@@USE_ADMOB@@@            mainHandler.post(myRunnable);
+//@@@USE_ADMOB@@@        } catch (Exception e) {
+//@@@USE_ADMOB@@@            Log.e(TAG, "u_admob_ump_show failed: " + e.toString());
+//@@@USE_ADMOB@@@        }
     }
 
     public boolean u_admob_reward_ad_loaded() {
@@ -334,40 +352,48 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     }
 
     public void u_admob_reward_ad_show() {
-        // run on main thread
-//@@@USE_ADMOB@@@        Handler mainHandler = new Handler(Looper.getMainLooper());
-//@@@USE_ADMOB@@@        Runnable myRunnable = new Runnable() {
-//@@@USE_ADMOB@@@            @Override
-//@@@USE_ADMOB@@@            public void run() {
-//@@@USE_ADMOB@@@                admob_showRewardedVideo();
-//@@@USE_ADMOB@@@            }
-//@@@USE_ADMOB@@@        };
-//@@@USE_ADMOB@@@        mainHandler.post(myRunnable);
+//@@@USE_ADMOB@@@        try {
+//@@@USE_ADMOB@@@            // run on main thread
+//@@@USE_ADMOB@@@            Handler mainHandler = new Handler(Looper.getMainLooper());
+//@@@USE_ADMOB@@@            Runnable myRunnable = new Runnable() {
+//@@@USE_ADMOB@@@                @Override
+//@@@USE_ADMOB@@@                public void run() {
+//@@@USE_ADMOB@@@                    admob_showRewardedVideo();
+//@@@USE_ADMOB@@@                }
+//@@@USE_ADMOB@@@            };
+//@@@USE_ADMOB@@@            mainHandler.post(myRunnable);
+//@@@USE_ADMOB@@@        } catch (Exception e) {
+//@@@USE_ADMOB@@@            Log.e(TAG, "u_admob_reward_ad_show failed: " + e.toString());
+//@@@USE_ADMOB@@@        }
     }
-
+    
 
     public boolean u_billing_loaded() {
         return billing_loaded;
     }
 
     public void u_billing_buy(final int idx) {
-//@@@USE_BILLING@@@        if (!billing_loaded) {
-//@@@USE_BILLING@@@            Log.e(TAG, "billing not loaded");
-//@@@USE_BILLING@@@            return;
-//@@@USE_BILLING@@@        }
-//@@@USE_BILLING@@@        if (idx < 0 || idx >= BILLING_PRODUCTS.length) {
-//@@@USE_BILLING@@@            Log.wtf(TAG, "billing buy got an invalid idx?");
-//@@@USE_BILLING@@@            return;
-//@@@USE_BILLING@@@        }
-//@@@USE_BILLING@@@        // run on main thread
-//@@@USE_BILLING@@@        Handler mainHandler = new Handler(Looper.getMainLooper());
-//@@@USE_BILLING@@@        Runnable myRunnable = new Runnable() {
-//@@@USE_BILLING@@@            @Override
-//@@@USE_BILLING@@@            public void run() {
-//@@@USE_BILLING@@@                billing_buy(idx);
+//@@@USE_BILLING@@@        try {
+//@@@USE_BILLING@@@            if (!billing_loaded) {
+//@@@USE_BILLING@@@                Log.e(TAG, "billing not loaded");
+//@@@USE_BILLING@@@                return;
 //@@@USE_BILLING@@@            }
-//@@@USE_BILLING@@@        };
-//@@@USE_BILLING@@@        mainHandler.post(myRunnable);
+//@@@USE_BILLING@@@            if (idx < 0 || idx >= BILLING_PRODUCTS.length) {
+//@@@USE_BILLING@@@                Log.wtf(TAG, "billing buy got an invalid idx?");
+//@@@USE_BILLING@@@                return;
+//@@@USE_BILLING@@@            }
+//@@@USE_BILLING@@@            // run on main thread
+//@@@USE_BILLING@@@            Handler mainHandler = new Handler(Looper.getMainLooper());
+//@@@USE_BILLING@@@            Runnable myRunnable = new Runnable() {
+//@@@USE_BILLING@@@                @Override
+//@@@USE_BILLING@@@                public void run() {
+//@@@USE_BILLING@@@                    billing_buy(idx);
+//@@@USE_BILLING@@@                }
+//@@@USE_BILLING@@@            };
+//@@@USE_BILLING@@@            mainHandler.post(myRunnable);
+//@@@USE_BILLING@@@        } catch (Exception e) {
+//@@@USE_BILLING@@@            Log.e(TAG, "u_billing_buy failed: " + e.toString());
+//@@@USE_BILLING@@@        }
     }
 
 
@@ -1031,9 +1057,22 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         Log.v(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
 
-//@@@USE_ADMOB@@@        ump_load();
-//@@@USE_ADMOB@@@        admob_load();
-//@@@USE_BILLING@@@        billing_load();
+//@@@USE_ADMOB@@@        try {
+//@@@USE_ADMOB@@@            ump_load();
+//@@@USE_ADMOB@@@        } catch (Exception e) {
+//@@@USE_ADMOB@@@            Log.e(TAG, "ump failed: " + e.toString());
+//@@@USE_ADMOB@@@        }
+//@@@USE_ADMOB@@@        try {
+//@@@USE_ADMOB@@@            admob_load();
+//@@@USE_ADMOB@@@        } catch (Exception e) {
+//@@@USE_ADMOB@@@            Log.e(TAG, "admob failed: " + e.toString());
+//@@@USE_ADMOB@@@        }
+		
+//@@@USE_BILLING@@@        try {
+//@@@USE_BILLING@@@            billing_load();
+//@@@USE_BILLING@@@        } catch (Exception e) {
+//@@@USE_BILLING@@@            Log.e(TAG, "billing failed: " + e.toString());
+//@@@USE_BILLING@@@        }
 
         try {
             Thread.currentThread().setName("SDLActivity");
@@ -1284,7 +1323,11 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         Log.v(TAG, "onDestroy()");
 
 //@@@USE_BILLING@@@        if (billing_billingClient!= null) {
-//@@@USE_BILLING@@@            billing_billingClient.endConnection();
+//@@@USE_BILLING@@@            try {
+//@@@USE_BILLING@@@                billing_billingClient.endConnection();
+//@@@USE_BILLING@@@            } catch(Exception e) {
+//@@@USE_BILLING@@@                // noop
+//@@@USE_BILLING@@@            }
 //@@@USE_BILLING@@@        }
 
         if (mHIDDeviceManager != null) {
@@ -1304,7 +1347,9 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
             // Wait for "SDLThread" thread to end
             try {
+                Log.v(TAG, "Joining the SDLThread");
                 SDLActivity.mSDLThread.join();
+                Log.v(TAG, "SDLThread joined");
             } catch (Exception e) {
                 Log.v(TAG, "Problem stopping SDLThread: " + e);
             }
@@ -1416,27 +1461,21 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                     // Added, because sometimes some got some assumptions wrong (double init)
                     // the C app MUST close before restart, so exiting the app...
                     if (main_running) {
-                        try {
-                            Log.e(TAG, "main already running? Restarting the app...");
-                            Intent mStartActivity = new Intent(getContext(), SDLActivity.class);
-                            int mPendingIntentId = 123456;
-                            PendingIntent mPendingIntent = PendingIntent.getActivity(getContext(), 
-                                    mPendingIntentId, mStartActivity, 
-                                    PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
-                            AlarmManager mgr = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-                            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-                        } catch (Exception e) {
-                            try {
-                                Log.e(TAG, "main already running? Restart failed");
-                                Toast.makeText(getContext(), "Please restart the app!", Toast.LENGTH_LONG).show();
-                            } catch (Exception e2) {
-                                Log.e(TAG, "main already running? Toast failed, wtf?");
+                        Log.e(TAG, "main already running? exiting after toast (timed)");
+                        Timer timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                Log.i(TAG, "timed exit...");
+                                System.exit(0);
                             }
-                        }
-                        System.exit(0);
+                        }, 2000); // [ms], Toast.LENGTH_LONG is 3500 btw...
+                        Toast.makeText(getContext(), "Please restart the App!", Toast.LENGTH_LONG).show();
+                        SDLActivity.mSingleton.finishAffinity();
                         return;
                     }
                     main_running = true;
+					
 
                     mSDLThread = new Thread(new SDLMain(), "SDLThread");
                     mSurface.enableSensor(Sensor.TYPE_ACCELEROMETER, true);
@@ -2565,15 +2604,18 @@ class SDLMain implements Runnable {
 
         Log.v("SDL", "Finished main function");
 
-        if (SDLActivity.mSingleton != null && !SDLActivity.mSingleton.isFinishing()) {
-            // Let's finish the Activity
-            SDLActivity.mSDLThread = null;
+        //// changed: just always finish all activitys to exit the app...
+//        if (SDLActivity.mSingleton != null && !SDLActivity.mSingleton.isFinishing()) {
+//            // Let's finish the Activity
+//            SDLActivity.mSDLThread = null;
+//
+//            SDLActivity.mSingleton.finish();
+//        }  // else: Activity is already being destroyed
 
-            // changed from finish and added exit(0) (restart bug)
-            SDLActivity.mSingleton.finishAffinity();
-            System.exit(0);
-        }  // else: Activity is already being destroyed
-
+        //// finishAffinity lets all activities in the back stack finish
+        SDLActivity.mSDLThread = null;
+        SDLActivity.mSingleton.finishAffinity();
+        ////
     }
 }
 
